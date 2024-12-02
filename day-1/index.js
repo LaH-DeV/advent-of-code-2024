@@ -1,4 +1,3 @@
-import { join } from "path";
 import { readFile } from "fs/promises";
 
 /**
@@ -30,7 +29,7 @@ function calculateSimilarityScore(left, right) {
 
 function main() {
     // assuming left.length === right.length
-    readFile(join("day-1", "input.txt"), "utf-8").then(input => {
+    readFile("input.txt", "utf-8").then(input => {
         const numbers = input.trim().split("\n").map((line) => line.trim().split(/\s+/).map(Number));
 
         let left = [];
