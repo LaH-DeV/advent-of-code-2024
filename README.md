@@ -38,6 +38,11 @@ advent-of-code-2024/
 |   ├── DAY_3.md
 |   └── input.txt
 │
+├── day-4/
+│   ├── main.cpp
+|   ├── DAY_4.md
+|   └── input.txt
+│
 ```
 
 ### Current Progress
@@ -45,6 +50,7 @@ advent-of-code-2024/
 - Day 1: `JavaScript`
 - Day 2: `Go`
 - Day 3: `C`
+- Day 4: `C++`
 
 ## License and Legal
 
