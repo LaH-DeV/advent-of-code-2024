@@ -80,7 +80,7 @@ function part_one($rules, $updates) {
 function part_two($rules, $updates) {
 	$sum = 0;
 	$cache = [];
-	foreach ($updates as $update_index=>$update) {
+	foreach ($updates as $update) {
 		if (is_update_correct($rules, $update, $cache)) continue;
 		$new_update = reorder_update($rules, $update, $cache);
 		$sum += $new_update[floor(count($new_update) / 2)];
