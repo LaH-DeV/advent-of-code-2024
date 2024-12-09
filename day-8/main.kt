@@ -6,67 +6,49 @@ data class Vec2(val x: Int, val y: Int) {
     operator fun times(scalar: Int) = Vec2(this.x * scalar, this.y * scalar)
 } 
 
-fun partOne(antennas: Map<Char, MutableSet<Vec2>>, inBounds: (Vec2) -> Boolean): Int {
-    val antinodeLocations = mutableSetOf<Vec2>()
+fun main() {
+    val lines = File("input.txt").readLines()
+    val antennas = mutableMapOf<Char, MutableSet<Vec2>>()
 
-    for (antenna in antennas.keys)
-    for (v1 in antennas[antenna]!!)
-    for (v2 in antennas[antenna]!!) {
-        if (v1 == v2) continue
-        val antinode = v1 + ((v2 - v1) * 2)
-        if (inBounds(antinode)) {
-            antinodeLocations.add(antinode)
-        }
+    for (row in lines.indices)
+    for (col in lines[0].indices) {
+        val cell = lines[row][col]
+        if (cell == '.') continue;
+        antennas.computeIfAbsent(cell) { mutableSetOf() }
+                .add(Vec2(row, col))
     }
 
-    return antinodeLocations.size
-}
+    val linesYRange = lines.indices
+    val linesXRange = lines[0].indices
+    val inBounds = { vec: Vec2 -> vec.x in linesXRange && vec.y in linesYRange }
 
-fun partTwo(antennas: Map<Char, MutableSet<Vec2>>, inBounds: (Vec2) -> Boolean): Int {
-    val antinodeLocations = mutableSetOf<Vec2>()
+    val antinodes1 = mutableSetOf<Vec2>() // part one
+    val antinodes2 = mutableSetOf<Vec2>() // part two
 
-    for (antenna in antennas.keys)
+ 	for (antenna in antennas.keys)
     for (v1 in antennas[antenna]!!)
     for (v2 in antennas[antenna]!!) {
         if (v1 == v2) continue
+        val distance = v2 - v1
+     	// relative distance from doubled distance
+        val antinode = v1 + (distance * 2) 
+        if (inBounds(antinode)) {
+            antinodes1.add(antinode)
+        }
         var positiveNextLocation = v1
         var negativeNextLocation = v1
-        val distance = v2 - v1
         do {
             positiveNextLocation = positiveNextLocation + distance
             negativeNextLocation = negativeNextLocation - distance
             if (inBounds(negativeNextLocation)) {
-                antinodeLocations.add(negativeNextLocation)
+                antinodes2.add(negativeNextLocation)
             }
             if (inBounds(positiveNextLocation)) {
-                antinodeLocations.add(positiveNextLocation)
+                antinodes2.add(positiveNextLocation)
             }
         } while (inBounds(positiveNextLocation))
     }
 
-    return antinodeLocations.size
-}
-
-fun main() {
-    val lines = File("input.txt").readLines()
-    val gridYRange = lines.indices
-    val gridXRange = lines[0].indices
-    val grid = lines.map { line -> line }
-    val antennaPositions = mutableMapOf<Char, MutableSet<Vec2>>()
-
-    for (rowIndex in grid.indices)
-    for (colIndex in grid[0].indices) {
-        val cell = grid[rowIndex][colIndex]
-        if (cell == '.') continue;
-        antennaPositions.computeIfAbsent(cell) { mutableSetOf() }
-        .add(Vec2(rowIndex, colIndex))
-    }
-
-    val inBounds = { vec: Vec2 -> vec.x in gridXRange && vec.y in gridYRange }
-
-    val antinodes1 = partOne(antennaPositions, inBounds)
-    val antinodes2 = partTwo(antennaPositions, inBounds)
-
-    println(antinodes1)
-    println(antinodes2)
+    println(antinodes1.size)
+    println(antinodes2.size)
 }
